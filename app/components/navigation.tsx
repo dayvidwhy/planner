@@ -11,7 +11,7 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-export default function Navigation() {
+export default function Navigation({ loggedIn }: { loggedIn: boolean }) {
     return (
         <NavigationMenu>
             <NavigationMenuList>
@@ -30,23 +30,16 @@ export default function Navigation() {
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/contact" legacyBehavior passHref>
+                    <Link href="/profile" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Contact
+                        Profile
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/login" legacyBehavior passHref>
+                    <Link href={`/api/auth/${loggedIn ? "signout" : "signin"}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Login
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/signup" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Sign Up
+                            {loggedIn ? "Logout" : "Login"}
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>

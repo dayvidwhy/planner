@@ -17,7 +17,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-
+import { useRouter } from "next/navigation";
 import {
     Form,
     FormControl,
@@ -37,7 +37,11 @@ const formSchema = z.object({
     })
 });
 
-export default function PlannerForm() {
+export default function PlannerForm({ 
+    createPlannedItem 
+}: { 
+    createPlannedItem: (values: z.infer<typeof formSchema>) => void 
+}) {
     // define form
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -46,10 +50,14 @@ export default function PlannerForm() {
             description: "",
         },
     });
+
+    const router = useRouter();
     
     // form action
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log(JSON.stringify(values));
+        await createPlannedItem(values);
+        router.refresh();
     };
     return (
         <Form {...form}>

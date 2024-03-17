@@ -7,6 +7,8 @@ import { createPlannedItem, getPlannedItems } from "./actions";
 import PlannerForm from "@/app/components/planner-form";
 import PlannerItems from "@/app/components/planner-items";
 
+import type { PlannerItem } from "@/app/components/planner-form";
+
 export default async function Profile() {
     // null or a user object from github
     const session: Session | null = await auth();
@@ -16,7 +18,7 @@ export default async function Profile() {
         redirect("/api/auth/signin?callbackUrl=/planner");
     }
 
-    const plannedItems = await getPlannedItems();
+    const plannedItems: PlannerItem[] | null | undefined = await getPlannedItems();
 
     return (
         <main className="flex min-h-screen p-24">

@@ -1,14 +1,17 @@
 "use client";
 
+// libs
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
+// local libs
 import { cn } from "@/lib/utils";
 
-
+// UI Components
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
@@ -17,7 +20,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { useRouter } from "next/navigation";
 import {
     Form,
     FormControl,
@@ -29,13 +31,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const formSchema = z.object({
+export const formSchema = z.object({
     summary: z.string().min(2).max(100),
     description: z.string().min(2).max(250),
     due: z.date({
         required_error: "A due date is required.",
     })
 });
+
+export type PlannerItem = z.infer<typeof formSchema>;
 
 export default function PlannerForm({ 
     createPlannedItem 

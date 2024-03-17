@@ -7,13 +7,19 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
+import type { PlannerItem } from "@/app/components/planner-form";
+
 import { format } from "date-fns";
 
-export default function PlannerItems({ plannedItems }) {
+interface PlannerItemsProps {
+    plannedItems: PlannerItem[] | null | undefined;
+};
+
+export default function PlannerItems({ plannedItems }: PlannerItemsProps): JSX.Element {
     console.error("Component got ", plannedItems);
     return (
         <div className="flex min-h-screen flex-col items-center">
-            {plannedItems.map((item, index) => (
+            {plannedItems?.map((item, index) => (
                 <div key={index} className="mb-4 w-full">
                     <Card>
                         <CardHeader>
@@ -23,7 +29,7 @@ export default function PlannerItems({ plannedItems }) {
                             <CardDescription>{item.description}</CardDescription>
                         </CardContent>
                         <CardFooter>
-                            <p>Planned for {format(new Date(item.due), "PP")}</p>
+                            <p>Planned for {format(item.due, "PP")}</p>
                         </CardFooter>
                     </Card>
                 </div>

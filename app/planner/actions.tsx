@@ -5,7 +5,9 @@ import { items } from "@/db/schema/items";
 
 import { generateGUID } from "@/lib/utils";
 
-export const createPlannedItem = async ({ summary, description, due}) => {
+import type { PlannerItem } from "@/app/components/planner-form";
+
+export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
     console.log("Attempting insert with: ", summary, description, due);
     try {
         const result = await db.insert(items).values({
@@ -20,7 +22,7 @@ export const createPlannedItem = async ({ summary, description, due}) => {
     }
 };
 
-export const getPlannedItems = async () => {
+export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     console.log("Attempting to get items");
 
     try {
@@ -29,10 +31,18 @@ export const getPlannedItems = async () => {
         if (!result) {
             return [];
         }
-        console.log(result);
-        console.log("Successfully got items", result);
-        return result;
+
+        // Convert the 'due' property from string to Date
+        const convertedResult: PlannerItem[] = result.map(item => ({
+            ...item,
+            due: new Date(item.due)
+        }));
+
+        console.log(convertedResult);
+        console.log("Successfully got items", convertedResult);
+        return convertedResult;
     } catch (e) {
         console.error(e);
+        throw new Error("Failed to fetch items from the database");
     }
 };

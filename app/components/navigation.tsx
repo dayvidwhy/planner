@@ -12,37 +12,40 @@ import {
 } from "@/components/ui/navigation-menu";
 
 export default function Navigation({ loggedIn }: { loggedIn: boolean }) {
+    const menuItems: { label: string; href: string }[] = [
+        {
+            label: "Home",
+            href: "/",
+        },
+        {
+            label: "About",
+            href: "/about",
+        },
+        {
+            label: "Planner",
+            href: "/planner",
+        },
+        {
+            label: "Profile",
+            href: "/profile",
+        },
+        {
+            label: loggedIn ? "Logout" : "Login",
+            href: `/api/auth/${loggedIn ? "signout" : "signin"}`,
+        }
+    ];
     return (
         <NavigationMenu>
             <NavigationMenuList>
-                <NavigationMenuItem>
-                    <Link href="/" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Home
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/about" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        About
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/profile" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Profile
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href={`/api/auth/${loggedIn ? "signout" : "signin"}`} legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            {loggedIn ? "Logout" : "Login"}
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
+                {menuItems.map((item) => (
+                    <NavigationMenuItem key={item.href}>
+                        <Link href={item.href} legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                {item.label}
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                ))}
             </NavigationMenuList>
         </NavigationMenu>
     );

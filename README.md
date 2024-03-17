@@ -45,6 +45,10 @@ npx drizzle-kit push:sqlite
 
 # Inspect the database with Drizzle kit studio
 npx drizzle-kit studio
+
+# If you're starting fresh, run generate and push to get going
+npx drizzle-kit generate:sqlite
+npx drizzle-kit push:sqlite
 ```
 
 View database files in `./drizzle/`, SQLite database is stored at `./sqlite.db`.

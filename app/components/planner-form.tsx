@@ -44,7 +44,7 @@ export type PlannerItem = z.infer<typeof formSchema>;
 export default function PlannerForm({ 
     createPlannedItem 
 }: { 
-    createPlannedItem: (values: z.infer<typeof formSchema>) => void 
+    createPlannedItem: (values: PlannerItem) => void 
 }) {
     // define form
     const form = useForm<z.infer<typeof formSchema>>({

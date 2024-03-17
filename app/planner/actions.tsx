@@ -1,48 +1,88 @@
 "use server";
 
+// libs
+import { eq } from "drizzle-orm";
+import { Session } from "next-auth";
+import { redirect } from "next/navigation";
+
+// local libs
 import { db } from "@/db";
 import { items } from "@/db/schema/items";
-
+import { users } from "@/db/schema/users";
+import { auth } from "@/app/auth";
 import { generateGUID } from "@/lib/utils";
-
 import type { PlannerItem } from "@/app/components/planner-form";
 
+// confirm user is logged in and has a session
+const authorizeUser = async () => {
+    const session: Session | null = await auth();
+
+    // if not signed in redirect to sign in page then back here
+    if (!session?.user) {
+        redirect("/api/auth/signin?callbackUrl=/planner");
+    }
+
+    return session;
+};
+
+// inserts a planned item into the database
 export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
-    console.log("Attempting insert with: ", summary, description, due);
+    const session = await authorizeUser();
+
     try {
-        const result = await db.insert(items).values({
+        await db.insert(items).values({
+            createdBy: session.user?.id as string,
             id: generateGUID(),
             summary,
             description,
             due: due.toISOString()
         });
-        console.log("Successfully inserted item", result);
     } catch (e) {
         console.error(e);
     }
 };
 
+// fetches planned items from the database
 export const getPlannedItems = async (): Promise<PlannerItem[]> => {
-    console.log("Attempting to get items");
+    const session = await authorizeUser();
 
+    let fetchedUser;
     try {
-        const result = await db.select().from(items).all();
+        fetchedUser = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, session.user?.email as string))
+            .limit(1);
+        fetchedUser = fetchedUser[0];
+    } catch (e) {
+        throw new Error("Failed to fetch items from the database");
+    }
 
-        if (!result) {
+    if (!fetchedUser) {
+        return [];
+    }
+
+    // get the items for the user
+    let fetchedItems;
+    try {
+        fetchedItems = await db
+            .select()
+            .from(items)
+            .where(eq(items.createdBy, fetchedUser.id))
+            .all();
+
+        if (!fetchedItems) {
             return [];
         }
 
         // Convert the 'due' property from string to Date
-        const convertedResult: PlannerItem[] = result.map(item => ({
+        const convertedResult: PlannerItem[] = fetchedItems.map(item => ({
             ...item,
             due: new Date(item.due)
         }));
 
-        console.log(convertedResult);
-        console.log("Successfully got items", convertedResult);
         return convertedResult;
     } catch (e) {
-        console.error(e);
         throw new Error("Failed to fetch items from the database");
     }
 };

@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/navigation";
 import { auth } from "./auth";
+import { ThemeProvider } from "@/components/theme-provider";
+import ThemeToggle from "@/app/components/theme-toggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,14 +22,24 @@ export default async function RootLayout({
     const session = await auth();
 
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
-                <Navigation
-                    loggedIn={session !== null}
-                />
-                <div className="container">
-                    {children}
-                </div>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <div className="flex justify-between p-1">
+                        <Navigation
+                            loggedIn={session !== null}
+                        />
+                        <ThemeToggle />
+                    </div>
+                    <div className="container">
+                        {children}
+                    </div>
+                </ThemeProvider>
             </body>
         </html>
     );

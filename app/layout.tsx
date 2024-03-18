@@ -43,7 +43,7 @@ export default async function RootLayout({
                             }}
                             signOut={async () => {
                                 "use server";
-                                await signOut();
+                                await signOut({redirectTo: "/"});
                             }}
                             loggedIn={session !== null}
                         />

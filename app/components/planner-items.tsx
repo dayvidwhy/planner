@@ -38,16 +38,15 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
                         <CardContent>
                             <CardDescription>{item.description}</CardDescription>
                         </CardContent>
-                        <CardFooter>
+                        <CardFooter className="justify-between">
                             <p>Planned for {format(item.due, "PP")}</p>
                             <Button
-                                className="w-full"
                                 onClick={async () => {
                                     await deletePlannedItem(item.id || "");
                                     router.refresh();
                                 }}  
                             >
-                                <Trash className="mr-2 h-4 w-4" />
+                                <Trash className="h-4 w-4" />
                             </Button>
                         </CardFooter>
                     </Card>

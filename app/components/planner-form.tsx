@@ -63,13 +63,10 @@ export default function PlannerForm({
             description: "",
         },
     });
-
-    const router = useRouter();
     
     // form action
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         await createPlannedItem(values);
-        router.refresh();
     };
     return (
         <Form {...form}>

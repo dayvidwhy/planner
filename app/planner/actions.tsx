@@ -4,6 +4,7 @@
 import { eq } from "drizzle-orm";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
+import { unstable_cache as cache, revalidateTag } from "next/cache";
 
 // local libs
 import { db } from "@/db";
@@ -40,20 +41,22 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
     } catch (e) {
         console.error(e);
     }
+
+    revalidateTag("planner-items");
 };
 
 // fetches planned items from the database
 export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     const session = await authorizeUser();
 
-    let fetchedUser;
+    let fetchedUser: any;
     try {
-        fetchedUser = await db
+        const dbQuery = await db
             .select()
             .from(users)
             .where(eq(users.email, session.user?.email as string))
             .limit(1);
-        fetchedUser = fetchedUser[0];
+        fetchedUser = dbQuery[0];
     } catch (e) {
         throw new Error("Failed to fetch items from the database");
     }
@@ -65,11 +68,18 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     // get the items for the user
     let fetchedItems;
     try {
-        fetchedItems = await db
-            .select()
-            .from(items)
-            .where(eq(items.createdBy, fetchedUser.id))
-            .all();
+        const query = cache(async () =>
+            await db
+                .select()
+                .from(items)
+                .where(eq(items.createdBy, fetchedUser.id))
+                .all(),
+        ["planner-items"],
+        {
+            tags: ["planner-items"]
+        });
+        
+        fetchedItems = await query();
 
         if (!fetchedItems) {
             return [];
@@ -116,4 +126,6 @@ export const deletePlannedItem = async (id: string) => {
     } catch (e) {
         throw new Error("Failed to delete item from the database");
     }
+
+    revalidateTag("planner-items");
 };

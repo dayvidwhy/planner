@@ -26,7 +26,6 @@ interface PlannerItemsProps {
 
 export default function PlannerItems({ plannedItems, deletePlannedItem }: PlannerItemsProps): JSX.Element {
     console.log("Component got ", plannedItems);
-    const router = useRouter();
     return (
         <div className="flex min-h-screen flex-col items-center">
             {plannedItems?.map((item, index) => (
@@ -43,7 +42,6 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
                             <Button
                                 onClick={async () => {
                                     await deletePlannedItem(item.id || "");
-                                    router.refresh();
                                 }}  
                             >
                                 <Trash className="h-4 w-4" />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/navigation";
-import { auth } from "./auth";
+import { auth, signIn, signOut } from "./auth";
 import { ThemeProvider } from "@/components/theme-provider";
 import ThemeToggle from "@/app/components/theme-toggle";
 
@@ -32,6 +32,14 @@ export default async function RootLayout({
                 >
                     <div className="flex justify-between p-1 border-b">
                         <Navigation
+                            signIn={async () => {
+                                "use server";
+                                await signIn();
+                            }}
+                            signOut={async () => {
+                                "use server";
+                                await signOut();
+                            }}
                             loggedIn={session !== null}
                         />
                         <ThemeToggle />

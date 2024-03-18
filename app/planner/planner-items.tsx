@@ -26,9 +26,9 @@ interface PlannerItemsProps {
 export default function PlannerItems({ plannedItems, deletePlannedItem }: PlannerItemsProps): JSX.Element {
     console.log("Component got ", plannedItems);
     return (
-        <div className="flex min-h-screen flex-col items-center">
+        <div className="flex flex-wrap items-center [&>*:nth-child(odd)]:pr-2 [&>*:nth-child(even)]:pl-2">
             {plannedItems?.map((item, index) => (
-                <div key={index} className="mb-4 w-full">
+                <div key={index} className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 pb-4">
                     <Card>
                         <CardHeader className="flex flex-row justify-between">
                             <CardTitle>{item.summary}</CardTitle>

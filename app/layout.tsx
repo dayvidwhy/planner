@@ -30,13 +30,13 @@ export default async function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className="flex justify-between p-1">
+                    <div className="flex justify-between p-1 border-b">
                         <Navigation
                             loggedIn={session !== null}
                         />
                         <ThemeToggle />
                     </div>
-                    <div className="container">
+                    <div className="container mt-8">
                         {children}
                     </div>
                 </ThemeProvider>

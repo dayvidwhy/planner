@@ -2,7 +2,7 @@
 
 // libs
 import { format } from "date-fns";
-import { Trash } from "lucide-react";
+import { X } from "lucide-react";
 
 // local libs
 import type { PlannerItem } from "@/app/planner/planner-form";
@@ -30,21 +30,21 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
             {plannedItems?.map((item, index) => (
                 <div key={index} className="mb-4 w-full">
                     <Card>
-                        <CardHeader>
+                        <CardHeader className="flex flex-row justify-between">
                             <CardTitle>{item.summary}</CardTitle>
+                            <Button
+                                onClick={async () => {
+                                    await deletePlannedItem(item.id || "");
+                                }}  
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
                         </CardHeader>
                         <CardContent>
                             <CardDescription>{item.description}</CardDescription>
                         </CardContent>
                         <CardFooter className="justify-between">
                             <p>Planned for {format(item.due, "PP")}</p>
-                            <Button
-                                onClick={async () => {
-                                    await deletePlannedItem(item.id || "");
-                                }}  
-                            >
-                                <Trash className="h-4 w-4" />
-                            </Button>
                         </CardFooter>
                     </Card>
                 </div>

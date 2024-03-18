@@ -4,6 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { Github } from "lucide-react";
 
+import { usePathname } from "next/navigation";
+
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -20,25 +22,34 @@ export default function Navigation({
     signIn: () => void
     signOut: () => void
 }) {
-    const menuItems: { label: string; href: string }[] = [
+    const pathname = usePathname();
+    const menuItems: {
+        label: string; 
+        href: string;
+        active: boolean;
+    }[] = [
         {
             label: "Home",
             href: "/",
+            active: pathname === "/",
         },
         {
             label: "Planner",
             href: "/planner",
+            active: pathname === "/planner",
         },
         {
             label: "Profile",
             href: "/profile",
+            active: pathname === "/profile",
         }
     ];
+
     return (
         <NavigationMenu>
             <NavigationMenuList>
                 {menuItems.map((item) => (
-                    <NavigationMenuItem key={item.href}>
+                    <NavigationMenuItem key={item.href} className={item.active ? "" : "text-muted-foreground" }>
                         <Link href={item.href} legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 {item.label}

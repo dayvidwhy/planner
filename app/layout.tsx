@@ -1,7 +1,12 @@
+// libs
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+// local libs
 import "./globals.css";
-import Navigation from "./components/navigation";
+
+// UI Components
+import Navigation from "@/app/components/navigation";
 import { auth, signIn, signOut } from "./auth";
 import { ThemeProvider } from "@/components/theme-provider";
 import ThemeToggle from "@/app/components/theme-toggle";

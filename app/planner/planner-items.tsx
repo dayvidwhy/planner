@@ -3,10 +3,9 @@
 // libs
 import { format } from "date-fns";
 import { Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 // local libs
-import type { PlannerItem } from "@/app/components/planner-form";
+import type { PlannerItem } from "@/app/planner/planner-form";
 
 // UI Components
 import {

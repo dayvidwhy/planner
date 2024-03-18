@@ -11,8 +11,8 @@ import { db } from "@/db";
 import { items } from "@/db/schema/items";
 import { users } from "@/db/schema/users";
 import { auth } from "@/app/auth";
-import { generateGUID } from "@/lib/utils";
-import type { PlannerItem } from "@/app/components/planner-form";
+import { generateGUID } from "@/lib/guid";
+import type { PlannerItem } from "@/app/planner/planner-form";
 
 // confirm user is logged in and has a session
 const authorizeUser = async () => {

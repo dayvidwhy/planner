@@ -4,10 +4,10 @@ import { redirect } from "next/navigation";
 
 import { createPlannedItem, getPlannedItems, deletePlannedItem } from "./actions";
 
-import PlannerForm from "@/app/components/planner-form";
-import PlannerItems from "@/app/components/planner-items";
+import PlannerForm from "@/app/planner/planner-form";
+import PlannerItems from "@/app/planner/planner-items";
 
-import type { PlannerItem } from "@/app/components/planner-form";
+import type { PlannerItem } from "@/app/planner/planner-form";
 
 export default async function Profile() {
     // null or a user object from github

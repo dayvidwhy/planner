@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:migrate": "drizzle-kit push:sqlite"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.8.0",

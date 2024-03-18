@@ -44,7 +44,7 @@ export default function Navigation({
             active: pathname === "/profile",
         }
     ];
-
+    
     return (
         <NavigationMenu>
             <NavigationMenuList>
@@ -60,17 +60,13 @@ export default function Navigation({
                 {
                     loggedIn ? (
                         <NavigationMenuItem>
-                            <Button variant="outline" type="button" onClick={async () => {
-                                await signOut();
-                            }}>
+                            <Button variant="outline" type="button" onClick={() => signOut()}>
                                 Log out
                             </Button>
                         </NavigationMenuItem>
                     ) : (
                         <NavigationMenuItem>
-                            <Button variant="outline" type="button" onClick={async () => {
-                                await signIn();
-                            }}>
+                            <Button variant="outline" type="button" onClick={() => signIn()}>
                                 <Github className="mr-2 h-4 w-4" />
                                 Login with Github
                             </Button>

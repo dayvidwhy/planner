@@ -26,10 +26,6 @@ export default function Navigation({
             href: "/",
         },
         {
-            label: "About",
-            href: "/about",
-        },
-        {
             label: "Planner",
             href: "/planner",
         },

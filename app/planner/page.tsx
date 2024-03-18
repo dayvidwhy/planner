@@ -2,7 +2,7 @@ import { Session } from "next-auth";
 import { auth } from "@/app/auth";
 import { redirect } from "next/navigation";
 
-import { createPlannedItem, getPlannedItems } from "./actions";
+import { createPlannedItem, getPlannedItems, deletePlannedItem } from "./actions";
 
 import PlannerForm from "@/app/components/planner-form";
 import PlannerItems from "@/app/components/planner-items";
@@ -19,14 +19,13 @@ export default async function Profile() {
     }
 
     const plannedItems: PlannerItem[] | null | undefined = await getPlannedItems();
-
     return (
         <main className="flex min-h-screen p-24">
             <div className="w-1/2 p-4">
                 <PlannerForm createPlannedItem={createPlannedItem} />
             </div>
             <div className="w-1/2 p-4">
-                <PlannerItems plannedItems={plannedItems} />
+                <PlannerItems plannedItems={plannedItems} deletePlannedItem={deletePlannedItem} />
             </div>
         </main>
     );

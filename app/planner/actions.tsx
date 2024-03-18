@@ -86,3 +86,34 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
         throw new Error("Failed to fetch items from the database");
     }
 };
+
+export const deletePlannedItem = async (id: string) => {
+    const session = await authorizeUser();
+
+
+    // confirm the item belongs to this user
+    let fetchedItem;
+    try {
+        fetchedItem = await db
+            .select()
+            .from(items)
+            .where(eq(items.id, id))
+            .all();
+        if (!fetchedItem) {
+            throw new Error("Item does not exist");
+        }
+
+        if (fetchedItem[0].createdBy !== session.user?.id) {
+            throw new Error("Item does not belong to this user");
+        }
+
+    } catch (e) {
+        throw new Error("Failed to fetch item from the database");
+    }
+
+    try {
+        await db.delete(items).where(eq(items.id, id)).execute();
+    } catch (e) {
+        throw new Error("Failed to delete item from the database");
+    }
+};

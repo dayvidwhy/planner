@@ -32,7 +32,7 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
                     <Card>
                         <CardHeader className="flex flex-row justify-between">
                             <CardTitle>{item.summary}</CardTitle>
-                            <Button
+                            <Button variant="outline" type="button"
                                 onClick={async () => {
                                     await deletePlannedItem(item.id || "");
                                 }}  

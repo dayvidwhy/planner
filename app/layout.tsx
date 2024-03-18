@@ -25,7 +25,9 @@ export default async function RootLayout({
                 <Navigation
                     loggedIn={session !== null}
                 />
-                {children}
+                <div className="container">
+                    {children}
+                </div>
             </body>
         </html>
     );

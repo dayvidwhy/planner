@@ -23,6 +23,10 @@ interface PlannerItemsProps {
     deletePlannedItem: (id: string) => void;
 };
 
+export const formatDateForDisplay = (date: Date): string => {
+    return format(date, "PP");
+};
+
 export default function PlannerItems({ plannedItems, deletePlannedItem }: PlannerItemsProps): JSX.Element {
     console.log("Component got ", plannedItems);
     return (
@@ -32,7 +36,7 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
                     <Card>
                         <CardHeader className="flex flex-row justify-between">
                             <CardTitle>{item.summary}</CardTitle>
-                            <Button variant="outline" type="button"
+                            <Button variant="outline" type="button" data-testid="delete-button"
                                 onClick={async () => {
                                     await deletePlannedItem(item.id || "");
                                 }}  
@@ -44,7 +48,7 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
                             <CardDescription>{item.description}</CardDescription>
                         </CardContent>
                         <CardFooter className="justify-between">
-                            <p>Planned for {format(item.due, "PP")}</p>
+                            <p>{`Planned for ${formatDateForDisplay(item.due)}`}</p>
                         </CardFooter>
                     </Card>
                 </div>

@@ -14,6 +14,8 @@ import { auth } from "@/app/auth";
 import { generateGUID } from "@/lib/guid";
 import type { PlannerItem } from "@/app/planner/planner-form";
 
+const ITEMS_DB_CACHE_TAG = "planner-items";
+
 // confirm user is logged in and has a session
 const authorizeUser = async () => {
     const session: Session | null = await auth();
@@ -42,7 +44,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
         console.error(e);
     }
 
-    revalidateTag("planner-items");
+    revalidateTag(ITEMS_DB_CACHE_TAG);
 };
 
 // fetches planned items from the database
@@ -74,9 +76,9 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
                 .from(items)
                 .where(eq(items.createdBy, fetchedUser.id))
                 .all(),
-        ["planner-items"],
+        [ITEMS_DB_CACHE_TAG],
         {
-            tags: ["planner-items"]
+            tags: [ITEMS_DB_CACHE_TAG]
         });
         
         fetchedItems = await query();
@@ -127,5 +129,5 @@ export const deletePlannedItem = async (id: string) => {
         throw new Error("Failed to delete item from the database");
     }
 
-    revalidateTag("planner-items");
+    revalidateTag(ITEMS_DB_CACHE_TAG);
 };

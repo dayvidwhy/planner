@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { shortName } from "@/lib/short";
+
 export default async function Profile() {
     // null or a user object from github
     const session: Session | null = await auth();
@@ -13,13 +15,6 @@ export default async function Profile() {
     if (!session?.user) {
         redirect("/api/auth/signin?callbackUrl=/profile");
     }
-
-    const shortName = () => {
-        if (session.user?.name) {
-            return session.user.name.split(" ").map((n) => n[0]).join("");
-        }
-        return "";
-    };
 
     return (
         <main className="min-h-screen">
@@ -33,7 +28,7 @@ export default async function Profile() {
             <div>
                 <Avatar>
                     <AvatarImage src={session.user?.image as string} />
-                    <AvatarFallback>{shortName()}</AvatarFallback>
+                    <AvatarFallback>{shortName(session.user?.name || "")}</AvatarFallback>
                 </Avatar>
                 <h1>{session.user?.name}</h1>
                 <p>{session.user?.email}</p>

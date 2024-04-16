@@ -4,5 +4,5 @@ import Page from "@/app/page";
  
 test("Page", () => {
     render(<Page />);
-    expect(screen.getByRole("heading", { level: 1, name: "Plan anything collaboratively" })).toBeDefined();
+    expect(screen.getByRole("heading", { level: 1, name: "Plan anything collaboratively with others" })).toBeDefined();
 });

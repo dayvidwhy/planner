@@ -13,6 +13,7 @@ import { users } from "@/db/schema/users";
 import { auth } from "@/app/auth";
 import { generateGUID } from "@/lib/utils/guid";
 import type { PlannerItem } from "@/lib/validators";
+import { formSchema } from "@/lib/validators";
 
 const ITEMS_DB_CACHE_TAG = "planner-items";
 
@@ -31,17 +32,21 @@ const authorizeUser = async () => {
 // inserts a planned item into the database
 export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
     const session = await authorizeUser();
+    const parseResult = formSchema.safeParse({ summary, description, due });
+    if (!parseResult.success) {
+        throw new Error("Invalid form data");
+    }
 
     try {
         await db.insert(items).values({
             createdBy: session.user?.id as string,
             id: generateGUID(),
-            summary,
-            description,
-            due: due.toISOString()
+            summary: parseResult.data.summary,
+            description: parseResult.data.description,
+            due: parseResult.data.due.toISOString()
         });
     } catch (e) {
-        console.error(e);
+        throw new Error("Internal server error.");
     }
 
     revalidateTag(ITEMS_DB_CACHE_TAG);

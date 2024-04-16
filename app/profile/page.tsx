@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { shortName } from "@/lib/short";
+import { shortName } from "@/lib/utils/short";
 
 export default async function Profile() {
     // null or a user object from github

@@ -1,11 +1,11 @@
 "use client";
 
 // libs
-import { format } from "date-fns";
 import { X } from "lucide-react";
 
 // local libs
-import type { PlannerItem } from "@/app/planner/planner-form";
+import type { PlannerItem } from "@/lib/validators";
+import { formatDateForDisplay } from "@/lib/utils/dates";
 
 // UI Components
 import {
@@ -21,10 +21,6 @@ import { Button } from "@/components/ui/button";
 interface PlannerItemsProps {
     plannedItems: PlannerItem[] | null | undefined;
     deletePlannedItem: (id: string) => void;
-};
-
-export const formatDateForDisplay = (date: Date): string => {
-    return format(date, "PP");
 };
 
 export default function PlannerItems({ plannedItems, deletePlannedItem }: PlannerItemsProps): JSX.Element {

@@ -2,13 +2,14 @@
 
 // libs
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 // local libs
 import { cn } from "@/lib/utils";
+import type { PlannerItem } from "@/lib/validators";
+import { formSchema } from "@/lib/validators";
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -36,24 +37,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-export const formSchema = z.object({
-    summary: z.string().min(2).max(100),
-    description: z.string().min(2).max(250),
-    due: z.date({
-        required_error: "A due date is required.",
-    }),
-    id: z.string().optional(),
-});
-
-export type PlannerItem = z.infer<typeof formSchema>;
-
 export default function PlannerForm({ 
     createPlannedItem 
 }: { 
     createPlannedItem: (values: PlannerItem) => void 
 }) {
     // define form
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<PlannerItem>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             summary: "",
@@ -62,7 +52,7 @@ export default function PlannerForm({
     });
     
     // form action
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: PlannerItem) => {
         await createPlannedItem(values);
     };
     return (

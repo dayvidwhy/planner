@@ -11,8 +11,8 @@ import { db } from "@/db";
 import { items } from "@/db/schema/items";
 import { users } from "@/db/schema/users";
 import { auth } from "@/app/auth";
-import { generateGUID } from "@/lib/guid";
-import type { PlannerItem } from "@/app/planner/planner-form";
+import { generateGUID } from "@/lib/utils/guid";
+import type { PlannerItem } from "@/lib/validators";
 
 const ITEMS_DB_CACHE_TAG = "planner-items";
 
@@ -101,7 +101,6 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
 
 export const deletePlannedItem = async (id: string) => {
     const session = await authorizeUser();
-
 
     // confirm the item belongs to this user
     let fetchedItem;

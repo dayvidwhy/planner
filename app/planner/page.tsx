@@ -22,7 +22,7 @@ export default async function Profile() {
 
     const plannedItems: PlannerItem[] | null | undefined = await getPlannedItems();
     return (
-        <main className="min-h-screen">
+        <main className="">
             <h2 className="text-3xl font-bold tracking-tight">
                 Planner
             </h2>

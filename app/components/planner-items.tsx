@@ -24,7 +24,6 @@ interface PlannerItemsProps {
 };
 
 export default function PlannerItems({ plannedItems, deletePlannedItem }: PlannerItemsProps): JSX.Element {
-    console.log("Component got ", plannedItems);
     return (
         <div className="flex flex-wrap items-center [&>*:nth-child(odd)]:pr-2 [&>*:nth-child(even)]:pl-2">
             {plannedItems?.map((item, index) => (

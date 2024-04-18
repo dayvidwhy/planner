@@ -105,7 +105,7 @@ export default function PlannerForm({
                                                 <Button
                                                     variant={"outline"}
                                                     className={cn(
-                                                        "w-[240px] pl-3 text-left font-normal",
+                                                        "pl-3 text-left font-normal w-full",
                                                         !field.value && "text-muted-foreground"
                                                     )}
                                                 >

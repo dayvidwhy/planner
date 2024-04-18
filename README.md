@@ -1,6 +1,11 @@
 # Planner
 Plan anything collaboratively with others.
 
+![GitHub last commit](https://img.shields.io/github/last-commit/dayvidwhy/planner)
+![GitHub issues](https://img.shields.io/github/issues/dayvidwhy/planner)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/dayvidwhy/planner)
+![GitHub](https://img.shields.io/github/license/dayvidwhy/planner)
+
 Application leverages:
 * Nextjs 14 with RSC for the front and back-end
 * Drizzle to manage an SQLite database

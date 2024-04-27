@@ -56,12 +56,16 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     const session = await authorizeUser();
 
-    let fetchedUser: any;
+    if (!session.user?.email) {
+        return [];
+    }
+
+    let fetchedUser;
     try {
         const dbQuery = await db
             .select()
             .from(users)
-            .where(eq(users.email, session.user?.email as string))
+            .where(eq(users.email, session.user.email))
             .limit(1);
         fetchedUser = dbQuery[0];
     } catch (e) {

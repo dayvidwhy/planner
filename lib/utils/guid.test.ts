@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
 import { generateGUID } from "./guid";
-import exp from "constants";
 
 test("generateGUID", () => {
     const guid = generateGUID();

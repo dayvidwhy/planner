@@ -65,6 +65,7 @@ export default function PlannerForm({
         try {
             await createPlannedItem(values);
             setHasErrors(false);
+            form.reset();
         } catch (e) {
             setHasErrors(true);
         }

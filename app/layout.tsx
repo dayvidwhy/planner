@@ -27,30 +27,34 @@ export default async function RootLayout({
     const session = await auth();
 
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={inter.className}>
+        <html lang="en" className="h-full" suppressHydrationWarning>
+            <body className={inter.className + " h-full"}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className="flex justify-between p-1 border-b">
-                        <Navigation
-                            signIn={async () => {
-                                "use server";
-                                await signIn();
-                            }}
-                            signOut={async () => {
-                                "use server";
-                                await signOut({redirectTo: "/"});
-                            }}
-                            loggedIn={session !== null}
-                        />
-                        <ThemeToggle />
-                    </div>
-                    <div className="container mt-8">
-                        {children}
+                    <div className="flex flex-col h-full">
+                        <div className="py-1 border-b border-slate-200 flex flex-row justify-between">
+                            <Navigation
+                                signIn={async () => {
+                                    "use server";
+                                    await signIn();
+                                }}
+                                signOut={async () => {
+                                    "use server";
+                                    await signOut({redirectTo: "/"});
+                                }}
+                                loggedIn={session !== null}
+                            />
+                            <ThemeToggle />
+                        </div>
+                        <div className="flex-1 overflow-y-auto">
+                            <div className="pt-8 container">
+                                {children}
+                            </div>
+                        </div>
                     </div>
                 </ThemeProvider>
             </body>

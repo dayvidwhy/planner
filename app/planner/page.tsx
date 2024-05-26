@@ -30,11 +30,11 @@ export default async function Profile() {
                 Create new planned actions here to share with others.
             </p>
             <Separator className="my-4" />
-            <div className="flex mt-4">
-                <div className="w-1/3 pr-2">
+            <div className="flex flex-col md:flex-row mt-4">
+                <div className="w-full md:w-1/3 md:pr-2 pb-4 md:pb-0">
                     <PlannerForm createPlannedItem={createPlannedItem} />
                 </div>
-                <div className="w-2/3 pl-2">
+                <div className="w-full md:w-2/3 md:pl-2">
                     <PlannerItems plannedItems={plannedItems} deletePlannedItem={deletePlannedItem} />
                 </div>
             </div>

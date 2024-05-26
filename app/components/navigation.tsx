@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { User } from "lucide-react";
 
 import { usePathname } from "next/navigation";
 
@@ -66,8 +66,8 @@ export default function Navigation({
                     ) : (
                         <NavigationMenuItem>
                             <Button variant="outline" type="button" onClick={() => signIn()}>
-                                <Github className="mr-2 h-4 w-4" />
-                                Login with Github
+                                <User className="mr-2 h-4 w-4" />
+                                Login
                             </Button>
                         </NavigationMenuItem>
                     )

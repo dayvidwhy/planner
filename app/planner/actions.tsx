@@ -31,6 +31,10 @@ const authorizeUser = async () => {
 // inserts a planned item into the database
 export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
     const session = await authorizeUser();
+    if (!session.user?.id) {
+        throw new Error("User not found");
+    }
+
     const parseResult = formSchema.safeParse({ summary, description, due });
     if (!parseResult.success) {
         throw new Error("Invalid form data");
@@ -38,7 +42,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 
     try {
         await db.insert(items).values({
-            createdBy: session.user?.id as string,
+            createdBy: session.user.id,
             id: crypto.randomUUID(),
             summary: parseResult.data.summary,
             description: parseResult.data.description,

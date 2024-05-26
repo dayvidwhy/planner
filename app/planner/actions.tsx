@@ -56,7 +56,7 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     const session = await authorizeUser();
 
     if (!session.user?.email) {
-        return [];
+        throw new Error("User email not found");
     }
 
     let fetchedUser;
@@ -68,11 +68,11 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
             .limit(1);
         fetchedUser = dbQuery[0];
     } catch (e) {
-        throw new Error("Failed to fetch items from the database");
+        throw new Error("Failed to fetch items");
     }
 
     if (!fetchedUser) {
-        return [];
+        throw new Error("User not found");
     }
 
     // get the items for the user
@@ -103,7 +103,7 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
 
         return convertedResult;
     } catch (e) {
-        throw new Error("Failed to fetch items from the database");
+        throw new Error("Failed to fetch planned items");
     }
 };
 
@@ -118,16 +118,16 @@ export const deletePlannedItem = async (id: string) => {
             .from(items)
             .where(eq(items.id, id))
             .all();
-        if (!fetchedItem) {
-            throw new Error("Item does not exist");
-        }
-
-        if (fetchedItem[0].createdBy !== session.user?.id) {
-            throw new Error("Item does not belong to this user");
-        }
-
     } catch (e) {
         throw new Error("Failed to fetch item from the database");
+    }
+
+    if (!fetchedItem || fetchedItem.length === 0) {
+        throw new Error("Item not found");
+    }
+
+    if (fetchedItem[0].createdBy !== session.user?.id) {
+        throw new Error("Item does not belong to this user");
     }
 
     try {

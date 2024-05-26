@@ -40,7 +40,7 @@ import { Input } from "@/components/ui/input";
 export default function PlannerForm({ 
     createPlannedItem 
 }: { 
-    createPlannedItem: (values: PlannerItem) => void 
+    createPlannedItem: (values: PlannerItem) => Promise<void>; 
 }) {
     // define form
     const form = useForm<PlannerItem>({

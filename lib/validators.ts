@@ -18,3 +18,19 @@ export const formSchema = z.object({
 });
 
 export type PlannerItem = z.infer<typeof formSchema>;
+
+export const organisationSchema = z.object({
+    name: z.string().min(1, {
+        message: "Please provide an organisation name.",
+    }).max(100, {
+        message: "Name must be at most 100 characters long."
+    }),
+    description: z.string().min(1, {
+        message: "Please provide an organisation description.",
+    }).max(250, {
+        message: "Description must be at most 250 characters long."
+    }),
+    id: z.string().optional(),
+});
+
+export type OrganisationSchema = z.infer<typeof organisationSchema>;

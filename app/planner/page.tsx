@@ -10,14 +10,26 @@ import PlannerItems from "@/app/components/planner-items";
 import type { PlannerItem } from "@/lib/validators";
 
 import { Separator } from "@/components/ui/separator";
+import { getUsersOrganisation } from "@/app/shared-actions";
 
-export default async function Profile() {
+export default async function Planner() {
     // null or a user object from github
     const session: Session | null = await auth();
 
     // if not signed in redirect to sign in page then back here
     if (!session?.user) {
         redirect("/api/auth/signin?callbackUrl=/planner");
+    }
+    
+    let organisation;
+    try {
+        organisation = await getUsersOrganisation(session.user.id || "");
+    } catch (e) {
+        throw new Error("Internal server error.");
+    }
+
+    if (!organisation?.organisationId) {
+        redirect("/create");
     }
 
     const plannedItems: PlannerItem[] | null | undefined = await getPlannedItems();

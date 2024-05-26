@@ -2,35 +2,21 @@
 
 // libs
 import { eq } from "drizzle-orm";
-import { Session } from "next-auth";
-import { redirect } from "next/navigation";
 import { unstable_cache as cache, revalidateTag } from "next/cache";
+import { authorizeUser } from "@/app/shared-actions";
 
 // local libs
 import { db } from "@/db";
 import { items } from "@/db/schema/items";
 import { users } from "@/db/schema/users";
-import { auth } from "@/app/auth";
 import type { PlannerItem } from "@/lib/validators";
 import { formSchema } from "@/lib/validators";
 
 const ITEMS_DB_CACHE_TAG = "planner-items";
 
-// confirm user is logged in and has a session
-const authorizeUser = async () => {
-    const session: Session | null = await auth();
-
-    // if not signed in redirect to sign in page then back here
-    if (!session?.user) {
-        redirect("/api/auth/signin?callbackUrl=/planner");
-    }
-
-    return session;
-};
-
 // inserts a planned item into the database
 export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
-    const session = await authorizeUser();
+    const session = await authorizeUser("planner");
     if (!session.user?.id) {
         throw new Error("User not found");
     }
@@ -57,7 +43,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 
 // fetches planned items from the database
 export const getPlannedItems = async (): Promise<PlannerItem[]> => {
-    const session = await authorizeUser();
+    const session = await authorizeUser("planner");
 
     if (!session.user?.email) {
         throw new Error("User email not found");
@@ -112,7 +98,7 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
 };
 
 export const deletePlannedItem = async (id: string) => {
-    const session = await authorizeUser();
+    const session = await authorizeUser("planner");
 
     // confirm the item belongs to this user
     let fetchedItem;

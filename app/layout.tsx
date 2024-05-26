@@ -36,7 +36,7 @@ export default async function RootLayout({
                     disableTransitionOnChange
                 >
                     <div className="flex flex-col h-full">
-                        <div className="py-1 border-b border-slate-200 flex flex-row justify-between">
+                        <div className="p-1 border-b border-slate-200 flex flex-row justify-between">
                             <Navigation
                                 signIn={async () => {
                                     "use server";

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, LogOut, LogIn, Home, Book } from "lucide-react";
+import { User, LogOut, LogIn, Home, Book, CogIcon } from "lucide-react";
 
 import { usePathname } from "next/navigation";
 
@@ -45,6 +45,12 @@ export default function Navigation({
             href: "/profile",
             active: pathname === "/profile",
             icon: User
+        },
+        {
+            label: "Settings",
+            href: "/settings",
+            active: pathname === "/settings",
+            icon: CogIcon
         }
     ];
     

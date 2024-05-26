@@ -29,12 +29,13 @@ export default function PlannerItems({ plannedItems, deletePlannedItem }: Planne
 
     useEffect(() => {
         if (hasErrors) {
+            // throw error for error boundary to catch
             throw new Error("Failed to delete planned item");
         }
     }, [hasErrors]);
 
     return (
-        <div className="flex flex-wrap items-center [&>*:nth-child(odd)]:pr-2 [&>*:nth-child(even)]:pl-2">
+        <div className="flex flex-wrap items-center w-full lg:[&>*:nth-child(odd)]:pr-2 lg:[&>*:nth-child(even)]:pl-2">
             {plannedItems?.map((item, index) => (
                 <div key={index} className="w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 pb-4">
                     <Card>

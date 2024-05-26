@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "lucide-react";
+import { User, LogOut, LogIn, Home, Book } from "lucide-react";
 
 import { usePathname } from "next/navigation";
 
@@ -26,21 +26,25 @@ export default function Navigation({
         label: string; 
         href: string;
         active: boolean;
+        icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     }[] = [
         {
             label: "Home",
             href: "/",
             active: pathname === "/",
+            icon: Home
         },
         {
             label: "Planner",
             href: "/planner",
             active: pathname === "/planner",
+            icon: Book
         },
         {
             label: "Profile",
             href: "/profile",
             active: pathname === "/profile",
+            icon: User
         }
     ];
     
@@ -51,6 +55,7 @@ export default function Navigation({
                     <NavigationMenuItem key={item.href} className={item.active ? "" : "text-muted-foreground" }>
                         <Link href={item.href} legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                <item.icon className="mr-2 h-4 w-4" />
                                 {item.label}
                             </NavigationMenuLink>
                         </Link>
@@ -60,13 +65,14 @@ export default function Navigation({
                     loggedIn ? (
                         <NavigationMenuItem>
                             <Button variant="outline" type="button" onClick={() => signOut()}>
+                                <LogOut className="mr-2 h-4 w-4" />
                                 Log out
                             </Button>
                         </NavigationMenuItem>
                     ) : (
                         <NavigationMenuItem>
                             <Button variant="outline" type="button" onClick={() => signIn()}>
-                                <User className="mr-2 h-4 w-4" />
+                                <LogIn className="mr-2 h-4 w-4" />
                                 Login
                             </Button>
                         </NavigationMenuItem>

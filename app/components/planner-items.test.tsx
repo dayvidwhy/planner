@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import PlannerItems from "./planner-items";
-import { formatDateForDisplay } from "@/lib/utils/dates";
+import { formatDateForDisplay } from "@/lib/utils";
 
 test("planner-items renders correct number of items with the right contents", async () => {
     // Mock data representing planned items

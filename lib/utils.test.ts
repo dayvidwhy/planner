@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { shortName } from "./short";
+import { shortName } from "./utils";
 
 test("shortName", () => {
     expect(shortName("John Doe")).toBe("JD");

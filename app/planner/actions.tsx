@@ -11,7 +11,6 @@ import { db } from "@/db";
 import { items } from "@/db/schema/items";
 import { users } from "@/db/schema/users";
 import { auth } from "@/app/auth";
-import { generateGUID } from "@/lib/utils/guid";
 import type { PlannerItem } from "@/lib/validators";
 import { formSchema } from "@/lib/validators";
 
@@ -40,7 +39,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
     try {
         await db.insert(items).values({
             createdBy: session.user?.id as string,
-            id: generateGUID(),
+            id: crypto.randomUUID(),
             summary: parseResult.data.summary,
             description: parseResult.data.description,
             due: parseResult.data.due.toISOString()

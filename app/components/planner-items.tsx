@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 
 // local libs
 import type { PlannerItem } from "@/lib/validators";
-import { formatDateForDisplay } from "@/lib/utils/dates";
+import { formatDateForDisplay } from "@/lib/utils";
 
 // UI Components
 import {

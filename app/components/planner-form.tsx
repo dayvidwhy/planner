@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 // local libs
 import { cn } from "@/lib/utils";
@@ -50,10 +51,23 @@ export default function PlannerForm({
             description: "",
         },
     });
+    const [hasErrors, setHasErrors] = useState(false);
+
+    useEffect(() => {
+        if (hasErrors) {
+            // throw error for error boundary to catch
+            throw new Error("Failed to create planned item");
+        }
+    }, [hasErrors]);
     
     // form action
     const onSubmit = async (values: PlannerItem) => {
-        await createPlannedItem(values);
+        try {
+            await createPlannedItem(values);
+            setHasErrors(false);
+        } catch (e) {
+            setHasErrors(true);
+        }
     };
     return (
         <Form {...form}>

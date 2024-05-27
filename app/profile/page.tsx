@@ -24,7 +24,8 @@ export default async function Profile() {
         throw new Error("Internal server error.");
     }
 
-    if (!organisation?.organisationId) {
+    const userIsNotPartOfOrganisation = !organisation?.organisationId;
+    if (userIsNotPartOfOrganisation) {
         redirect("/create");
     }
 

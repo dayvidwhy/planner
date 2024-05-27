@@ -28,7 +28,8 @@ export default async function Planner() {
         throw new Error("Internal server error.");
     }
 
-    if (!organisation?.organisationId) {
+    const userIsNotPartOfOrganisation = !organisation?.organisationId;
+    if (userIsNotPartOfOrganisation) {
         redirect("/create");
     }
 

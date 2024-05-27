@@ -23,7 +23,8 @@ export default async function CreateOrganisation() {
         throw new Error("Internal server error.");
     }
 
-    if (organisation?.organisationId) {
+    const userAlreadyHasOrganisation = organisation?.organisationId;
+    if (userAlreadyHasOrganisation) {
         redirect("/planner");
     }
 

@@ -30,7 +30,6 @@ export default async function Settings() {
     }
 
     const organisationSettings = await getOrganisationSettings(organisation);
-
     const organisationUsers = await getOrganisationUsers(organisation);
 
     return (

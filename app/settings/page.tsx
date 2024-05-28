@@ -45,8 +45,8 @@ export default async function Settings() {
                 <div className="w-1/3">
                     <h3 className="text-lg font-semibold">Organisation</h3>
                     <div className="mt-4">
-                        <p className="text-sm text-muted-foreground">Name: {organisationSettings.name}</p>
-                        <p className="text-sm text-muted-foreground">Email: {organisationSettings.description}</p>
+                        <p className="text-sm text-muted-foreground">{organisationSettings.name}</p>
+                        <p className="text-sm text-muted-foreground">{organisationSettings.description}</p>
                     </div>
                 </div>
                 <div className="w-2/3">

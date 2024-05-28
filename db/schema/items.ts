@@ -1,4 +1,5 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { organisations } from "./organisations";
 import { users } from "./users";
 
 export const items = sqliteTable("item", {
@@ -7,4 +8,5 @@ export const items = sqliteTable("item", {
     summary: text("summary").notNull(),
     description: text("description").notNull(),
     due: text("due").notNull(),
+    organisationId: text("organisationId").notNull().references(() => organisations.id),
 });

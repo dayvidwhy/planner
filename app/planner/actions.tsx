@@ -8,9 +8,9 @@ import { authorizeUser } from "@/app/shared-actions";
 // local libs
 import { db } from "@/db";
 import { items } from "@/db/schema/items";
-import { users } from "@/db/schema/users";
 import type { PlannerItem } from "@/lib/validators";
 import { formSchema } from "@/lib/validators";
+import { getUsersOrganisation } from "@/app/shared-actions";
 
 const ITEMS_DB_CACHE_TAG = "planner-items";
 
@@ -26,13 +26,25 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
         throw new Error("Invalid form data");
     }
 
+    let organisation;
+    try {
+        organisation = await getUsersOrganisation(session.user.id || "");
+    } catch (e) {
+        throw new Error("Internal server error.");
+    }
+
+    if (!organisation?.organisationId) {
+        throw new Error("User is not part of an organisation");
+    }
+
     try {
         await db.insert(items).values({
             createdBy: session.user.id,
             id: crypto.randomUUID(),
             summary: parseResult.data.summary,
             description: parseResult.data.description,
-            due: parseResult.data.due.toISOString()
+            due: parseResult.data.due.toISOString(),
+            organisationId: organisation.organisationId
         });
     } catch (e) {
         throw new Error("Internal server error.");
@@ -49,20 +61,15 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
         throw new Error("User email not found");
     }
 
-    let fetchedUser;
+    let organisation;
     try {
-        const dbQuery = await db
-            .select()
-            .from(users)
-            .where(eq(users.email, session.user.email))
-            .limit(1);
-        fetchedUser = dbQuery[0];
+        organisation = await getUsersOrganisation(session.user.id || "");
     } catch (e) {
-        throw new Error("Failed to fetch items");
+        throw new Error("Internal server error.");
     }
 
-    if (!fetchedUser) {
-        throw new Error("User not found");
+    if (!organisation?.organisationId) {
+        throw new Error("User is not part of an organisation");
     }
 
     // get the items for the user
@@ -72,7 +79,7 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
             await db
                 .select()
                 .from(items)
-                .where(eq(items.createdBy, fetchedUser.id))
+                .where(eq(items.organisationId, organisation.organisationId))
                 .all(),
         [ITEMS_DB_CACHE_TAG],
         {

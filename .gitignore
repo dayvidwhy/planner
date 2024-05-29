@@ -37,4 +37,3 @@ next-env.d.ts
 
 #db
 sqlite.db
-drizzle

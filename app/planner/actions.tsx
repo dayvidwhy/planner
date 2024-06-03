@@ -17,8 +17,9 @@ const ITEMS_DB_CACHE_TAG = "planner-items";
 // inserts a planned item into the database
 export const createPlannedItem = async ({ summary, description, due}: PlannerItem) => {
     const session = await authorizeUser("planner");
-    if (!session.user?.id) {
-        throw new Error("User not found");
+    const userId = session.user?.id;
+    if (!userId) {
+        throw new Error("Unauthorized user");
     }
 
     const parseResult = formSchema.safeParse({ summary, description, due });
@@ -28,7 +29,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 
     let organisation;
     try {
-        organisation = await getUsersOrganisation(session.user.id || "");
+        organisation = await getUsersOrganisation(userId);
     } catch (e) {
         throw new Error("Internal server error.");
     }
@@ -39,7 +40,7 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 
     try {
         await db.insert(items).values({
-            createdBy: session.user.id,
+            createdBy: userId,
             id: crypto.randomUUID(),
             summary: parseResult.data.summary,
             description: parseResult.data.description,
@@ -56,6 +57,10 @@ export const createPlannedItem = async ({ summary, description, due}: PlannerIte
 // fetches planned items from the database
 export const getPlannedItems = async (): Promise<PlannerItem[]> => {
     const session = await authorizeUser("planner");
+    const userId = session.user?.id;
+    if (!userId) {
+        throw new Error("Unauthorized user");
+    }
 
     if (!session.user?.email) {
         throw new Error("User email not found");
@@ -63,7 +68,7 @@ export const getPlannedItems = async (): Promise<PlannerItem[]> => {
 
     let organisation;
     try {
-        organisation = await getUsersOrganisation(session.user.id || "");
+        organisation = await getUsersOrganisation(userId);
     } catch (e) {
         throw new Error("Internal server error.");
     }
